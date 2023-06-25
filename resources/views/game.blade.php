@@ -18,10 +18,22 @@
             cursor: pointer;
         }
         .hit {
-            background-color: rgb(255, 0, 0);
+            background-color: rgb(255, 0, 0) !important;
         }
         .miss {
             background-color: gray;
+        }
+        .one-target{
+            background-color: rgb(119, 248, 119);
+        }
+        .two-target{
+            background-color: rgb(30, 236, 30);
+        }
+        .three-target{
+            background-color: rgb(0, 159, 0);
+        }
+        .four-target{
+            background-color: rgb(3, 72, 3);
         }
     </style>
     <script defer>
@@ -56,8 +68,35 @@
             }
         }
 
+        async function init() {
+            try {
+                const response = await fetch("http://localhost:8000/game/{{$game->id}}/init", {
+                method: "POST", 
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                },
+                body: '',
+                });
+
+                const result = await response.json();
+                console.log("Success:", result);
+
+                putTargets(result.ownTargets);
+                showPlayerHits(result.ownShots);
+                showEnemyHits(result.enemyShots);
+
+
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             
+            // on first load initialize the game with it's DATA
+            init();
+
             const locations = document.querySelectorAll('#board_2 .location');
          
             locations.forEach(el => el.addEventListener('click', event => {
@@ -84,6 +123,67 @@
             const board = document.querySelector('#board_2');
             const cell = board.querySelector(`.location_${y}_${x}`);
             cell.classList.add('miss');
+        }
+
+        function putTargets(data) {
+            data.forEach(e => {
+                let coords = e.locations;
+                switch(coords.length) {
+                    case 1:
+                        showTarget(coords, 'one');
+                        break;
+                    case 2:
+                        showTarget(coords, 'two');
+                        break;
+                    case 3:
+                        showTarget(coords, 'three');
+                        break;
+                    case 4:
+                        showTarget(coords, 'four');
+                        break;
+                }   
+            })
+        }
+
+        
+
+        function showTarget(array, size) {
+            
+            array.forEach(e => {
+                const board = document.querySelector('#board_1');
+                const cell = board.querySelector(`.location_${e.y}_${e.x}`);
+                cell.classList.add(`${size}-target`);
+            });
+        }
+
+        function showPlayerHits(array) {
+            const board = document.querySelector('#board_2');
+            array.forEach(e => {
+                const cell = board.querySelector(`.location_${e.y}_${e.x}`);
+                if(e.hit === true) {
+                    if(!cell.classList.contains('hit')){
+                        cell.classList.add(`hit`);
+                    }
+                }
+                else {
+                    cell.classList.add('miss');
+                }
+            });
+        }
+      
+        function showEnemyHits(array) {
+            const board = document.querySelector('#board_1');
+            array.forEach(e => {
+                const cell = board.querySelector(`.location_${e.y}_${e.x}`);
+                if(e.hit === true) {
+                    if(!cell.classList.contains('hit')){
+                        cell.classList.add(`hit`);
+                    }
+                }
+                else {
+                    cell.classList.add('miss');
+                }
+            });
         }
 
 

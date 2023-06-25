@@ -49,4 +49,11 @@ class GameController extends Controller
        
     }
 
+    public function initGame($id) {
+        $game = Game::find($id);
+        $response = $game->init();
+
+        return response()->json($response);
+    }
+
 }

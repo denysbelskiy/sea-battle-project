@@ -69,7 +69,7 @@ class Game extends Model
                 2 => array(
                     array(
                         'locations' => array(
-                            array('x' => 6, 'y' => 6, 'hit' => false),
+                            array('x' => 1, 'y' => 9, 'hit' => false),
                         ),
                         'destroyed' => false
                     ),
@@ -106,25 +106,32 @@ class Game extends Model
        
        $this->prepareData();
        $hit_detection = false;
-       $player = 0;
+       $player = 0; $enemy = 0;
        $gameover = false;
+       $isDestroyed = false;
+       $areTargetsDestroyed = false;
 
        if($this->user_id == auth()->user()->id) {
+            $enemy = 2;
             $player = 1;
        } elseif($this->user2_id == auth()->user()->id) {
+            $enemy = 1;
             $player = 2;
        }  
 
        // check if we hit target
-       $targets = $this->data->targets->{$player};
+       $targets = $this->data->targets->{$enemy};
+       $hitted_target = null;
        foreach($targets as $target){
             $coordinates = $target->locations;
             foreach($coordinates as $coordinate) {
                 if($coordinate->x == $x && $coordinate->y == $y){
                     $hit_detection = true;
-                    // TODO: also set hit inside ship to true
+                    $coordinate->hit = $hit_detection;
+                    $hitted_target = $target;
                     break 2;
                 }
+
             }
 
        }
@@ -132,6 +139,37 @@ class Game extends Model
        // TODO: check if gameover (no more ships)
        // -> data:status:finished = true
        // -> data:status:winner = player 1 or player 2
+
+       if($hit_detection === true){
+        $coordinates = $hitted_target->locations;
+        foreach($coordinates as $coordinate) {
+            
+            if($coordinate->hit === true) {
+                $isDestroyed = true;
+            }
+            else {
+                $isDestroyed = false;
+                break;
+            }
+        }
+
+        $hitted_target->destroyed = $isDestroyed;
+
+        if($isDestroyed === true) {
+            foreach($targets as $target) {
+                if($target->destroyed === true) {
+                    $areTargetsDestroyed = true;
+                }
+                else {
+                    $areTargetsDestroyed = false;
+                    break;
+                }
+            }
+            
+        }
+       
+
+       }
 
        $this->data->shots->{$player}[] = array(
             'x' => $x,
@@ -146,11 +184,34 @@ class Game extends Model
             'x' => $x,
             'y' => $y,
             'hit' => $hit_detection,
-            'gameover' => $gameover
+            'gameover' => $gameover,
+            'isDestroyed' =>  $isDestroyed,
+            'areTargetsDestroyed' => $areTargetsDestroyed,
        );
 
        return $response;
        
+    }
+
+    public function init() {
+        $this->prepareData();
+        $player = 0;
+        if($this->user_id == auth()->user()->id) {
+            $player = 1;
+            $enemy = 2;
+       } elseif($this->user2_id == auth()->user()->id) {
+            $player = 2;
+            $enemy = 1;
+       }  
+
+       $response = array(
+            'status' => $this->data->status,
+            'ownShots' => $this->data->shots->{$player},
+            'enemyShots' => $this->data->shots->{$enemy},
+            'ownTargets' => $this->data->targets->{$player},
+       );
+
+       return $response;
     }
 }
 

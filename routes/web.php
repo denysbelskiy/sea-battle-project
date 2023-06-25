@@ -28,3 +28,4 @@ Route::post('/create-game',[GameController::class, 'createGame']);
 Route::post('/join-game',[GameController::class, 'joinGame']);
 Route::get('/game/{id}',[GameController::class, 'playGame'])->name('game');
 Route::post('/game/{id}/shot',[GameController::class, 'shotGame']);
+Route::post('/game/{id}/init',[GameController::class, 'initGame']);
