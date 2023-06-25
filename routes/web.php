@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\UserController;
+use Illuminate\Routing\Redirector;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,5 @@ Route::post('/login', [UserController::class, 'login']);
 
 Route::post('/create-game',[GameController::class, 'createGame']);
 Route::post('/join-game',[GameController::class, 'joinGame']);
-Route::post('/game/{index}', function(){
-    return view('game');
-});
+Route::get('/game/{id}',[GameController::class, 'playGame'])->name('game');
+Route::post('/game/{id}/shot',[GameController::class, 'shotGame']);

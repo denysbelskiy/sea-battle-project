@@ -17,15 +17,36 @@ class GameController extends Controller
         unset($incomingFields['gametitle']);
         $incomingFields['user_id'] = auth()->id();
         $game = Game::create($incomingFields);
-        $index = $game->id;
-        return view('/game', ['game' => $game]);
+        $game->initGame();
+        return redirect()->route('game', ['id' => $game->id]);
     }
     
     public function joinGame(Request $request) {
         
-        $games = Game::find($request->game_id);
-        $games->joinPlayerTwo(auth()->user()->id);
+        $game = Game::find($request->game_id);
+        $game->joinPlayerTwo(auth()->user()->id);
         
+        return redirect()->route('game' ,['id' => $game->id]);
+  
 
     }
+    public function playGame(string $id) {
+       
+        $game = Game::find($id);
+        $game->prepareData();
+        return view('game', ['game' => $game]);
+
+    }
+
+    public function shotGame($id, Request $request) {
+
+        $data = $request->json()->all();
+        $game = Game::find($id);
+        $response = $game->shoot($data['y'], $data['x']);
+
+        
+       return response()->json($response);
+       
+    }
+
 }
