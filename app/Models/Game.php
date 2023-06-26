@@ -136,10 +136,6 @@ class Game extends Model
 
        }
 
-       // TODO: check if gameover (no more ships)
-       // -> data:status:finished = true
-       // -> data:status:winner = player 1 or player 2
-
        if($hit_detection === true){
         $coordinates = $hitted_target->locations;
         foreach($coordinates as $coordinate) {
@@ -167,6 +163,12 @@ class Game extends Model
             }
             
         }
+
+        //save data if game over and who is winner
+        if($areTargetsDestroyed === true) {
+            $this->data->status->finished = true;
+            $this->data->status->winner = $player;
+        }
        
 
        }
@@ -178,7 +180,9 @@ class Game extends Model
        ); 
 
 
-       // TODO: change status->shooter to the other player
+       // change status->shooter to the other player
+       $this->data->status->shooter = $enemy;
+
        $this->data = json_encode($this->data );
        $this->save();
 
@@ -221,6 +225,36 @@ class Game extends Model
 
        return $response;
     }
+
+    public function ping() {
+        $this->prepareData();
+        $player = 0;
+        $enemy = 0;
+        if($this->user_id == auth()->user()->id) {
+            $player = 1;
+            $enemy = 2;
+        } elseif($this->user2_id == auth()->user()->id) {
+            $player = 2;
+            $enemy = 1;
+        }  
+
+        $yourturn = false;
+        if($this->data->status->shooter == $player) {
+            $yourturn = true;
+        } 
+
+        $lastenemyshot = end($this->data->shots->{$enemy});
+
+        $response = array(
+            'yourturn' => $yourturn,
+            'winner' => $this->data->status->winner,
+            'finished' => $this->data->status->finished,
+            'lastenemyshot' => $lastenemyshot,
+        );
+
+        return $response;
+    }
 }
+
 
 

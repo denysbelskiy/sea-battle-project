@@ -56,4 +56,11 @@ class GameController extends Controller
         return response()->json($response);
     }
 
+    public function pingGame($id) {
+        $game = Game::find($id);
+        $response = $game->ping();
+
+        return response()->json($response);
+    }
+
 }

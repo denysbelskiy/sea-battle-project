@@ -26,7 +26,7 @@
                         <button name="game_id" value="{{$game->id}}">Join this game</button>
                     </form>
                 @else
-                    <p>it's your game</p>
+                    <p><a href="@php echo route('game', ['id' => $game->id]); @endphp">go play</a></p>
                 @endif
                 </div>
             @endforeach
