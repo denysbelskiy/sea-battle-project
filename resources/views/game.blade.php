@@ -15,7 +15,10 @@
             border: 1px solid black;
         }
         #board_2.board .location {
-            cursor: pointer;
+            cursor: crosshair;
+        }
+        #board_2.board.locked .location {
+            cursor:not-allowed;
         }
         .hit {
             background-color: rgb(255, 0, 0) !important;
@@ -85,6 +88,13 @@
                 putTargets(result.ownTargets);
                 showPlayerHits(result.ownShots);
                 showEnemyHits(result.enemyShots);
+
+                // TODO: Create 2 divs: your turn, not your turn (waiting for enemy)
+                // show one of this div depending on your-turn-response
+                // create global var for yourturn
+                // set global var depending on your-turn-response
+                // in click eventlistener, don't run shot() if its not your turn
+                // add class to board_2 "locked" if not your turn, remove class if it's your turn
 
 
             } catch (error) {
@@ -223,5 +233,6 @@
                 @endfor
         </div>
     </div>
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']); --}}
 </body>
 </html>

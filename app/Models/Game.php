@@ -32,7 +32,7 @@ class Game extends Model
             'status' => array(
                 'finished' => false,
                 'winner' => null,
-                'shooter' => null
+                'shooter' => 1
             ),
             'shots' => array(
                 1 => array(
@@ -177,6 +177,8 @@ class Game extends Model
             'hit' => $hit_detection
        ); 
 
+
+       // TODO: change status->shooter to the other player
        $this->data = json_encode($this->data );
        $this->save();
 
@@ -204,8 +206,14 @@ class Game extends Model
             $enemy = 1;
        }  
 
+       $yourturn = false;
+       if($this->data->status->shooter == $player) {
+        $yourturn = true;
+       } 
+
        $response = array(
             'status' => $this->data->status,
+            'yourturn' => $yourturn,
             'ownShots' => $this->data->shots->{$player},
             'enemyShots' => $this->data->shots->{$enemy},
             'ownTargets' => $this->data->targets->{$player},
