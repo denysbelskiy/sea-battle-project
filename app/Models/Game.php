@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Game extends Model
 {
@@ -110,6 +111,7 @@ class Game extends Model
        $gameover = false;
        $isDestroyed = false;
        $areTargetsDestroyed = false;
+       $winner = $this->data->status->winner;
 
        if($this->user_id == auth()->user()->id) {
             $enemy = 2;
@@ -179,13 +181,22 @@ class Game extends Model
             'hit' => $hit_detection
        ); 
 
+       $winners_name = '';
+       if($this->data->status->finished) {
+        if($this->data->status->winner == 1) {
+            $user = User::find($this->user_id);
+        } else {
+            $user = User::find($this->user2_id);
+        }
+
+        $winners_name = $user->name;
+       }
 
        // change status->shooter to the other player
        $this->data->status->shooter = $enemy;
 
        $this->data = json_encode($this->data );
        $this->save();
-
        $response = array(
             'x' => $x,
             'y' => $y,
@@ -193,6 +204,8 @@ class Game extends Model
             'gameover' => $gameover,
             'isDestroyed' =>  $isDestroyed,
             'areTargetsDestroyed' => $areTargetsDestroyed,
+            'winner' => $winner, // obsolet?
+            'winners_name' => $winners_name,
        );
 
        return $response;
@@ -202,6 +215,9 @@ class Game extends Model
     public function init() {
         $this->prepareData();
         $player = 0;
+
+        
+
         if($this->user_id == auth()->user()->id) {
             $player = 1;
             $enemy = 2;
@@ -214,6 +230,17 @@ class Game extends Model
        if($this->data->status->shooter == $player) {
         $yourturn = true;
        } 
+       
+       $winners_name = '';
+       if($this->data->status->finished) {
+        if($this->data->status->winner == 1) {
+            $user = User::find($this->user_id);
+        } else {
+            $user = User::find($this->user2_id);
+        }
+
+        $winners_name = $user->name;
+       }
 
        $response = array(
             'status' => $this->data->status,
@@ -221,6 +248,7 @@ class Game extends Model
             'ownShots' => $this->data->shots->{$player},
             'enemyShots' => $this->data->shots->{$enemy},
             'ownTargets' => $this->data->targets->{$player},
+            'winners_name' => $winners_name
        );
 
        return $response;
@@ -245,11 +273,23 @@ class Game extends Model
 
         $lastenemyshot = end($this->data->shots->{$enemy});
 
+        $winners_name = '';
+        if($this->data->status->finished) {
+         if($this->data->status->winner == 1) {
+             $user = User::find($this->user_id);
+         } else {
+             $user = User::find($this->user2_id);
+         }
+ 
+         $winners_name = $user->name;
+        }
+
         $response = array(
             'yourturn' => $yourturn,
             'winner' => $this->data->status->winner,
             'finished' => $this->data->status->finished,
             'lastenemyshot' => $lastenemyshot,
+            'winners_name' => $winners_name,
         );
 
         return $response;

@@ -124,10 +124,7 @@
                 });
 
                 const result = await response.json();
-                console.log("Success:", result);
-
-                // TODO: check îf gameover
-                // Show winner
+                console.log("Success:", result);  
 
                 if(result.hit === true) {
                     addHitClass(result.y, result.x);
@@ -136,7 +133,15 @@
                     addMissClass(result.y, result.x);
                 }
 
-                ping();
+                if (result.gameover) {
+
+                    showWinner(result.winners_name);
+
+                } else {
+
+                    ping();
+
+                }
 
             } catch (error) {
                 console.error("Error:", error);
@@ -166,6 +171,9 @@
                     giveMessedgeToTurnDiv('SHOOT', isYourTurn);
                     if(board_2.classList.contains('locked')){
                         board_2.classList.remove('locked');
+                    }
+                    if (result.status.finished) {
+                        showWinner(result.winners_name);
                     }
                 }
                 else{
@@ -200,28 +208,36 @@
                 isYourTurn = result.yourturn;
                 const board_2 = document.querySelector('#board_2');
 
-                if (isYourTurn) {
+                //check if player lost
 
-                    giveMessedgeToTurnDiv('SHOOT', isYourTurn);
+                if (result.finished) {
+                        showWinner(result.winners_name);
+                } else {
 
-                    if(board_2.classList.contains('locked')){
-                        board_2.classList.remove('locked');
+                    if (isYourTurn) {
+
+                        giveMessedgeToTurnDiv('SHOOT', isYourTurn);
+
+                        if(board_2.classList.contains('locked')){
+                            board_2.classList.remove('locked');
+                        }
+
+                        showEnemyHit(result.lastenemyshot);
+
                     }
+                    else{
 
-                    showEnemyHit(result.lastenemyshot);
+                        giveMessedgeToTurnDiv('WAIT', isYourTurn);
 
-                }
-                else{
+                        if(!board_2.classList.contains('locked')){
+                            board_2.classList.add('locked');
+                        }
 
-                    giveMessedgeToTurnDiv('WAIT', isYourTurn);
+                        setTimeout(() => {
+                            ping();
+                        }, 1000);
 
-                    if(!board_2.classList.contains('locked')){
-                        board_2.classList.add('locked');
                     }
-
-                    setTimeout(() => {
-                        ping();
-                    }, 1000);
 
                 }
 
@@ -328,6 +344,7 @@
             div.appendChild(p);
             return div;
         }
+
         function giveMessedgeToTurnDiv(messedge, turn) {
             // setAttribute('id','para-1');
             let p = document.querySelector('.show-turn-messedge');
@@ -346,6 +363,16 @@
                 }
             }
 
+        }
+
+        function showWinner(winner) {
+            let container = document.querySelector('.show-turn');
+            if(container) {
+                container.setAttribute('id','show-winner');
+                container.classList.remove('show-turn');
+                let p = container.querySelector('p');
+                p.innerText = `${winner} win !!!`;
+            }
         }
 
     </script>
