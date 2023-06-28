@@ -11,6 +11,10 @@ body {
     background-size: cover; 
 }
 
+h1 {
+    margin-top: 1.4em;
+}
+
 .greeting {
     text-align: center;                             
     font-size: 2.7rem;
@@ -79,3 +83,23 @@ table {
     border-radius: 30px ;
 
 }
+
+@media only screen and (max-width: 900px) {
+    body {
+      background-color: lightblue;
+    }
+    #boards {
+        flex-direction: column;
+        place-items: center;
+    }
+
+    #board_2 {
+        margin-top: 20px;
+    }
+
+    .location {
+        width: 10px;
+        height: 10px; 
+    }
+
+  }
