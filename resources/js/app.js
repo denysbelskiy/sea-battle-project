@@ -4,6 +4,7 @@ import './bootstrap';
 let turnDiv = createTurnDiv();
 document.body.appendChild(turnDiv);
 let isYourTurn = false;
+let boardContainer = document.querySelector('#boards');
 
 window.addEventListener('DOMContentLoaded', () => {
     
@@ -30,11 +31,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
 async function shot(data) {
     try {
-        const response = await fetch("http://localhost:8000/game/{{$game->id}}/shot", {
+        const response = await fetch(boardContainer.dataset.shot, {
         method: "POST", 
         headers: {
             "Content-Type": "application/json",
-            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            "X-CSRF-TOKEN": boardContainer.dataset.csrf
         },
         body: JSON.stringify(data),
         });
@@ -66,11 +67,11 @@ async function shot(data) {
 
 async function init() {
     try {
-        const response = await fetch("http://localhost:8000/game/{{$game->id}}/init", {
+        const response = await fetch(boardContainer.dataset.init, {
         method: "POST", 
         headers: {
             "Content-Type": "application/json",
-            "X-CSRF-TOKEN": "{{ csrf_token() }}".attr('content')
+            "X-CSRF-TOKEN": boardContainer.dataset.csrf
         },
         body: '',
         });
@@ -109,11 +110,11 @@ async function init() {
 
 async function ping() {
     try {
-        const response = await fetch("http://localhost:8000/game/{{$game->id}}/ping", {
+        const response = await fetch(boardContainer.dataset.ping, {
         method: "POST", 
         headers: {
             "Content-Type": "application/json",
-            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            "X-CSRF-TOKEN": boardContainer.dataset.csrf
         },
         body: '',
         });

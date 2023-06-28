@@ -1,0 +1,187 @@
+body {
+    background:linear-gradient(to right, #E9F8FF, #90B2D8, #C1E3FF);
+}
+.greeting {
+    text-align: center;                             
+    font-size: 2.7rem;
+    font-family: 'Martian Mono', monospace;
+    font-weight: 700;
+}
+
+
+.buttonClass {
+    font-size:15px;
+    font-family:'Martian Mono', monospace;
+    width:140px;
+    height:50px;
+    border-width:1px;
+    color:#666666;
+    border-color:#dcdcdc;
+    font-weight:bold;
+    border-top-left-radius:6px;
+    border-top-right-radius:6px;
+    border-bottom-left-radius:6px;
+    border-bottom-right-radius:6px;
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    text-shadow:inset 0px 1px 0px #ffffff;
+}
+
+.buttonClass:hover {
+    background: linear-gradient(#e9e9e9, #f9f9f9);
+}
+    
+.logout-div
+{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.buttonJoinGame {
+    font-size:15px;
+    font-family:'Martian Mono', monospace;
+    width:140px;
+    height:50px;
+    border-width:1px;
+    color:#666666;
+    border-color:#dcdcdc;
+    font-weight:bold;
+    border-top-left-radius:6px;
+    border-top-right-radius:6px;
+    border-bottom-left-radius:6px;
+    border-bottom-right-radius:6px;
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    text-shadow:inset 0px 1px 0px #ffffff;
+}
+
+.buttonJoinGame:hover {
+    background: linear-gradient(#e9e9e9, #f9f9f9);
+}
+
+.startBtn {
+    margin-top: 20px;
+    font-size:15px;
+    font-family:'Martian Mono', monospace;
+    width:140px;
+    height:50px;
+    border-width:1px;
+    color:#666666;
+    border-color:#dcdcdc;
+    font-weight:bold;
+    border-top-left-radius:6px;
+    border-top-right-radius:6px;
+    border-bottom-left-radius:6px;
+    border-bottom-right-radius:6px;
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    text-shadow:inset 0px 1px 0px #ffffff; 
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+.div1 {
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+    height: 100%;
+    place-content: center;
+}
+
+.div2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+}
+
+.start-game-form {
+    width: 50%;
+    max-height: 10rem;
+    text-align: center;
+    padding-top: 1em;
+}
+
+.ship-icon {
+    display: flex;
+    justify-content: center;
+}
+
+.h3-name {
+    font-family: 'Martian Mono', monospace;
+    font-size: 1.2rem;
+    margin-top: 80px;
+    text-transform: uppercase;
+}
+
+.gameByMary {
+    color: white;
+    text-transform: uppercase;
+    background-color: rgb(132 178 229 / 50%);
+    border: 1px solid white;
+    border-radius: 30px;
+    width: 70%;
+    text-align: center;
+    height: auto;
+    padding-bottom: 10px;
+    margin-top: 1rem;
+}
+
+input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+input[type=password], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+h2 {
+    font-family: 'Martian Mono', monospace;
+}
+
+h3 {
+    font-size: 5rem;
+    font-family: 'Martian Mono', monospace;
+    text-align: center;
+    margin-bottom: 0;
+    margin-top: 1.5rem;
+}
+
+h4 {
+    font-family: 'Martian Mono', monospace;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+
+.container1 {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    gap: 4%;
+
+}
+
+.login,
+.register {
+    width: 25%;
+}
+
+.shipLogo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}

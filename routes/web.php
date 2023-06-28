@@ -31,6 +31,8 @@ Route::post('/game/{id}/shot',[GameController::class, 'shotGame']);
 Route::post('/game/{id}/init',[GameController::class, 'initGame']);
 Route::post('/game/{id}/ping',[GameController::class, 'pingGame']);
 
+Route::get('/game/{id}/init',[GameController::class, 'initGame']);
+Route::get('/game/{id}/shot',[GameController::class, 'shotGame']);
 Route::get('/game/{id}/ping',[GameController::class, 'pingGame']);
 
 

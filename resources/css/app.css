@@ -1,7 +1,5 @@
-.board {
-    border: 3px solid black;
-    padding: 5px;
-}
+
+
 
 .board table td {
     border: 1px solid black;
@@ -29,10 +27,4 @@
 }
 .four-target{
     background-color: rgb(3, 72, 3);
-}
-.show-turn {
-    width: 100px;
-    height: 50px;
-    align-items: center;
-    border: 2px solid black;
 }
